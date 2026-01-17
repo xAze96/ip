@@ -1,13 +1,26 @@
+import java.util.Scanner;
+
 public class Aze {
     public static void main(String[] args) {
-        String greetString = "____________________________________________________________\n"
-                        + " Hello! I'm Aze\n"
-                        + " What can I do for you?\n"
-                        + "____________________________________________________________\n";
-        System.out.println(greetString);
+        System.out.println("    ____________________________________________________________");
+        System.out.println("     Hello! I'm Aze");
+        System.out.println("     What can I do for you?");
+        System.out.println("    ____________________________________________________________\n");
         
-        String exitString = " Bye. Hope to see you again soon!\n"
-                        + "____________________________________________________________";
-        System.out.println(exitString);
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String input = scanner.nextLine();
+            if (input.equals("bye")) {
+                break;
+            }
+            System.out.println("    ____________________________________________________________");
+            System.out.println("     " + input);
+            System.out.println("    ____________________________________________________________\n");
+        }
+        scanner.close();
+
+        System.out.println("    ____________________________________________________________");
+        System.out.println("     Bye. Hope to see you again soon!");
+        System.out.println("    ____________________________________________________________");
     }
 }
