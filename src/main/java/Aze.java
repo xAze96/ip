@@ -78,6 +78,15 @@ public class Aze {
                         }
                         addTask(tasks, new Event(eventInputs[0], fromTo[0], fromTo[1]));
                         break;
+
+                    case "delete":
+                        try {
+                            taskNum = Integer.parseInt(inputs[1]) - 1;
+                            display("Noted. I've removed this task:\n       " + tasks.remove(taskNum) + "\n     Now you have " + tasks.size() + " tasks in the list.");
+                        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+                            throw new AzeException("Please provide a valid task number to delete.");
+                        }
+                        break;
                     default:
                         display("Invalid command.");
                 }
