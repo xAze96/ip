@@ -16,17 +16,17 @@ public class Aze {
                 break;
             }
             String[] inputs = input.split(" ", 2);
+            
             try {
-
-                switch (inputs[0]) {
-                    case "list":
+                switch (Command.valueOf(inputs[0])) {
+                    case list:
                         String taskString = String.join("\n     ", IntStream.range(0, tasks.size())
                                 .mapToObj(i -> (i + 1) + "." + tasks.get(i))
                                 .toList());
                         display("Here are the tasks in your list:\n     " + taskString);
                         break;
 
-                    case "mark":
+                    case mark:
                         try {
                             taskNum = Integer.parseInt(inputs[1]) - 1;
                             tasks.get(taskNum).markAsDone();
@@ -36,7 +36,7 @@ public class Aze {
                         }
                             break;
 
-                    case "unmark":
+                    case unmark:
                         try {
                             taskNum = Integer.parseInt(inputs[1]) - 1;
                             tasks.get(taskNum).markAsNotDone();
@@ -46,14 +46,14 @@ public class Aze {
                         }
                         break;
                     
-                    case "todo":
+                    case todo:
                         if (inputs.length < 2 || inputs[1].isBlank()) {
                             throw new AzeException("Please provide a description for the todo.");
                         }
                         addTask(tasks, new Todo(inputs[1]));
                         break;
                         
-                    case "deadline":
+                    case deadline:
                         if (inputs.length < 2 || inputs[1].isBlank()) {
                             throw new AzeException("Please provide a description for the deadline.");
                         }
@@ -64,7 +64,7 @@ public class Aze {
                         addTask(tasks, new Deadline(deadlineInputs[0], deadlineInputs[1]));
                         break;
 
-                    case "event":
+                    case event:
                         if (inputs.length < 2 || inputs[1].isBlank()) {
                             throw new AzeException("Please provide a description for the event.");
                         }
@@ -79,7 +79,7 @@ public class Aze {
                         addTask(tasks, new Event(eventInputs[0], fromTo[0], fromTo[1]));
                         break;
 
-                    case "delete":
+                    case delete:
                         try {
                             taskNum = Integer.parseInt(inputs[1]) - 1;
                             display("Noted. I've removed this task:\n       " + tasks.remove(taskNum) + "\n     Now you have " + tasks.size() + " tasks in the list.");
@@ -87,6 +87,7 @@ public class Aze {
                             throw new AzeException("Please provide a valid task number to delete.");
                         }
                         break;
+
                     default:
                         display("Invalid command.");
                 }
@@ -94,8 +95,8 @@ public class Aze {
                 display("Error: " + e.getMessage());
             }
         }
-        scanner.close();
 
+        scanner.close();
         display("Bye. Hope to see you again soon!");
     }
 
