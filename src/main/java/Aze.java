@@ -78,7 +78,11 @@ public class Aze {
                         if (deadlineInputs.length < 2 || deadlineInputs[0].isBlank()) {
                             throw new AzeException("Please specify a time/date using ' /by '.");
                         }
-                        addTask(tasks, new Deadline(deadlineInputs[0], deadlineInputs[1]));
+                        try {
+                            addTask(tasks, new Deadline(deadlineInputs[0], deadlineInputs[1]));
+                        } catch (Exception e) {
+                            throw new AzeException("Please provide the date in the format YYYY-MM-DD.");
+                        }
                         break;
 
                     case event:
