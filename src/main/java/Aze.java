@@ -2,23 +2,40 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class Aze {
+
+    private static final String FILE_PATH = "./data/aze.txt";
+
     public static void main(String[] args) {
+        
+        File file = new File(FILE_PATH);
+        List<Task> tasks = loadFile(file);
+
         display("Hello! I'm Aze\n     What can I do for you?");
         
-        List<Task> tasks = new ArrayList<>();
-        int taskNum;
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            String input = scanner.nextLine();
-            if (input.equals("bye")) {
-                break;
-            }
-            String[] inputs = input.split(" ", 2);
-            
+        boolean exit = false;
+        while (!exit) {
             try {
-                switch (Command.valueOf(inputs[0])) {
+                String input = scanner.nextLine();
+                String[] inputs = input.split(" ", 2);
+                Command command;
+                try {
+                    command = Command.valueOf(inputs[0]);
+                } catch (IllegalArgumentException e) {
+                    throw new AzeException("Unknown Command.");
+                }
+                switch (command) {
+                    case bye:
+                        exit = true;
+                        break;
+                        
                     case list:
                         String taskString = String.join("\n     ", IntStream.range(0, tasks.size())
                                 .mapToObj(i -> (i + 1) + "." + tasks.get(i))
@@ -28,7 +45,7 @@ public class Aze {
 
                     case mark:
                         try {
-                            taskNum = Integer.parseInt(inputs[1]) - 1;
+                            int taskNum = Integer.parseInt(inputs[1]) - 1;
                             tasks.get(taskNum).markAsDone();
                             display("Nice! I've marked this task as done:\n       " + tasks.get(taskNum));
                         } catch (IndexOutOfBoundsException | NumberFormatException e) {
@@ -38,7 +55,7 @@ public class Aze {
 
                     case unmark:
                         try {
-                            taskNum = Integer.parseInt(inputs[1]) - 1;
+                            int taskNum = Integer.parseInt(inputs[1]) - 1;
                             tasks.get(taskNum).markAsNotDone();
                             display("OK, I've marked this task as not done yet:\n       " + tasks.get(taskNum));
                         } catch (IndexOutOfBoundsException | NumberFormatException e) {
@@ -81,16 +98,14 @@ public class Aze {
 
                     case delete:
                         try {
-                            taskNum = Integer.parseInt(inputs[1]) - 1;
+                            int taskNum = Integer.parseInt(inputs[1]) - 1;
                             display("Noted. I've removed this task:\n       " + tasks.remove(taskNum) + "\n     Now you have " + tasks.size() + " tasks in the list.");
                         } catch (IndexOutOfBoundsException | NumberFormatException e) {
                             throw new AzeException("Please provide a valid task number to delete.");
                         }
                         break;
-
-                    default:
-                        display("Invalid command.");
                 }
+                saveFile(file, tasks);
             } catch (AzeException e) {
                 display("Error: " + e.getMessage());
             }
@@ -109,5 +124,61 @@ public class Aze {
     private static void addTask(List<Task> tasks, Task task) {
         tasks.add(task);
         display("Got it. I've added this task:\n       " + task + "\n     Now you have " + tasks.size() + " tasks in the list.");
+    }
+
+    private static List<Task> loadFile(File file) {
+        List<Task> tasks = new ArrayList<>();
+        try {
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(" \\| ");
+                String taskType = parts[0];
+                boolean isDone = parts[1].equals("1");
+                String description = parts[2];
+
+                Task task;
+                switch (taskType) {
+                    case "T":
+                        task = new Todo(description);
+                        break;
+                    case "D":
+                        String by = parts[3];
+                        task = new Deadline(description, by);
+                        break;
+                    case "E":
+                        String from = parts[3];
+                        String to = parts[4];
+                        task = new Event(description, from, to);
+                        break;
+                    default:
+                        continue;
+                }
+                if (isDone) {
+                    task.markAsDone();
+                }
+                tasks.add(task);
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            return new ArrayList<>();
+        }
+        return tasks;
+    }
+
+    private static void saveFile(File file, List<Task> tasks) throws AzeException {
+        try {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            FileWriter writer = new FileWriter(file);
+            for (Task task : tasks) {
+                writer.write(task.toFileString() + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            throw new AzeException("An error occurred while writing to the file.");
+        }
     }
 }

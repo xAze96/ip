@@ -22,4 +22,8 @@ public class Task {
     public void markAsNotDone() {
         this.isDone = false;
     }
+
+    public String toFileString() {
+        return (isDone ? "1" : "0") + " | " + description;
+    }
 }
