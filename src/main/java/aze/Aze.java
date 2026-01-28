@@ -1,3 +1,15 @@
+package aze;
+import aze.command.Command;
+import aze.exception.AzeException;
+import aze.parser.Parser;
+import aze.storage.Storage;
+import aze.task.Deadline;
+import aze.task.Event;
+import aze.task.Task;
+import aze.task.Tasklist;
+import aze.task.Todo;
+import aze.ui.Ui;
+
 import java.util.Scanner;
 import java.util.stream.IntStream;
 

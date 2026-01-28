@@ -1,3 +1,8 @@
+package aze.parser;
+
+import aze.exception.AzeException;
+import aze.command.Command;
+
 public class Parser {
     public static Command parseCommand(String input) throws AzeException {
         String[] inputs = input.split(" ", 2);
