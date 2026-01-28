@@ -1,10 +1,11 @@
 todo read book
-deadline return book /by June 6th
-event project meeting /from Aug 6th 2pm /to 4pm
-list
-mark 1
+deadline return book /by 2024-08-01
+event project meeting /from 2024-07-20 /to 2024-07-21
+test
 mark 3
+list
 deadline do homework /by no idea :-p
+event
 unmark 3
 list
 bye
