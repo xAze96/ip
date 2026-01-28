@@ -132,6 +132,20 @@ public class Aze {
                             throw new AzeException("Please provide a valid task number to delete.");
                         }
                         break;
+                    
+                    case FIND:
+                        if (inputs.length < 2 || inputs[1].isBlank()) {
+                            throw new AzeException("Please provide a keyword to search.");
+                        }
+                        String keyword = inputs[1];
+                        Tasklist matchingTasks = new Tasklist(tasks.getAllTasks().stream()
+                                .filter(task -> task.matchesDescription(keyword))
+                                .toList());
+                        String matchingString = String.join("\n     ", IntStream.range(0, matchingTasks.size())
+                                .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
+                                .toList());
+                        ui.display("Here are the matching tasks in your list:\n     " + matchingString);
+                        break;
                 }
                 storage.save(tasks.getAllTasks());
             } catch (AzeException e) {

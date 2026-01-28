@@ -26,6 +26,8 @@ public class ParserTest {
 
         assertEquals(Command.UNMARK, Parser.parseCommand("unmark 3"));
 
+        assertEquals(Command.FIND, Parser.parseCommand("find homework"));
+
         assertEquals(Command.BYE, Parser.parseCommand("bye"));
     }
 
