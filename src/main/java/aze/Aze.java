@@ -1,4 +1,8 @@
 package aze;
+
+import java.util.Scanner;
+import java.util.stream.IntStream;
+
 import aze.command.Command;
 import aze.exception.AzeException;
 import aze.parser.Parser;
@@ -9,9 +13,6 @@ import aze.task.Task;
 import aze.task.Tasklist;
 import aze.task.Todo;
 import aze.ui.Ui;
-
-import java.util.Scanner;
-import java.util.stream.IntStream;
 
 /**
  * Main class for the Aze chatbot application.
@@ -54,19 +55,19 @@ public class Aze {
                 String[] inputs = input.split(" ", 2);
                 Command command = Parser.parseCommand(input);
                 switch (command) {
-                    case bye:
+                    case BYE:
                         isExit = true;
                         ui.display("Bye. Hope to see you again soon!");
                         break;
                         
-                    case list:
+                    case LIST:
                         String taskString = String.join("\n     ", IntStream.range(0, tasks.size())
                                 .mapToObj(i -> (i + 1) + "." + tasks.get(i))
                                 .toList());
                         ui.display("Here are the tasks in your list:\n     " + taskString);
                         break;
 
-                    case mark:
+                    case MARK:
                         try {
                             int taskNum = Integer.parseInt(inputs[1]) - 1;
                             tasks.get(taskNum).markAsDone();
@@ -76,7 +77,7 @@ public class Aze {
                         }
                             break;
 
-                    case unmark:
+                    case UNMARK:
                         try {
                             int taskNum = Integer.parseInt(inputs[1]) - 1;
                             tasks.get(taskNum).markAsNotDone();
@@ -86,14 +87,14 @@ public class Aze {
                         }
                         break;
                     
-                    case todo:
+                    case TODO:
                         if (inputs.length < 2 || inputs[1].isBlank()) {
                             throw new AzeException("Please provide a description for the todo.");
                         }
                         addTask(tasks, new Todo(inputs[1]), ui);
                         break;
                         
-                    case deadline:
+                    case DEADLINE:
                         if (inputs.length < 2 || inputs[1].isBlank()) {
                             throw new AzeException("Please provide a description for the deadline.");
                         }
@@ -108,7 +109,7 @@ public class Aze {
                         }
                         break;
 
-                    case event:
+                    case EVENT:
                         if (inputs.length < 2 || inputs[1].isBlank()) {
                             throw new AzeException("Please provide a description for the event.");
                         }
@@ -123,7 +124,7 @@ public class Aze {
                         addTask(tasks, new Event(eventInputs[0], fromTo[0], fromTo[1]), ui);
                         break;
 
-                    case delete:
+                    case DELETE:
                         try {
                             int taskNum = Integer.parseInt(inputs[1]) - 1;
                             ui.display("Noted. I've removed this task:\n       " + tasks.remove(taskNum) + "\n     Now you have " + tasks.size() + " tasks in the list.");

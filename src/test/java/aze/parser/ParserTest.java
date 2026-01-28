@@ -12,21 +12,21 @@ public class ParserTest {
 
     @Test
     public void parseCommand_validCommands_success() throws AzeException {
-        assertEquals(Command.list, Parser.parseCommand("list"));
+        assertEquals(Command.LIST, Parser.parseCommand("list"));
 
-        assertEquals(Command.mark, Parser.parseCommand("mark 1"));
+        assertEquals(Command.MARK, Parser.parseCommand("mark 1"));
 
-        assertEquals(Command.todo, Parser.parseCommand("todo buy groceries"));
+        assertEquals(Command.TODO, Parser.parseCommand("todo buy groceries"));
 
-        assertEquals(Command.deadline, Parser.parseCommand("deadline assignment /by 2024-12-25"));
+        assertEquals(Command.DEADLINE, Parser.parseCommand("deadline assignment /by 2024-12-25"));
 
-        assertEquals(Command.event, Parser.parseCommand("event party /from 2pm /to 4pm"));
+        assertEquals(Command.EVENT, Parser.parseCommand("event party /from 2pm /to 4pm"));
 
-        assertEquals(Command.delete, Parser.parseCommand("delete 5"));
+        assertEquals(Command.DELETE, Parser.parseCommand("delete 5"));
 
-        assertEquals(Command.unmark, Parser.parseCommand("unmark 3"));
+        assertEquals(Command.UNMARK, Parser.parseCommand("unmark 3"));
 
-        assertEquals(Command.bye, Parser.parseCommand("bye"));
+        assertEquals(Command.BYE, Parser.parseCommand("bye"));
     }
 
     @Test
