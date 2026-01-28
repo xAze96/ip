@@ -9,6 +9,10 @@ public class Task {
         this.isDone = false;
     }
 
+    public boolean matchesDescription(String keyword) {
+        return this.description.contains(keyword);
+    }
+
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
