@@ -13,12 +13,22 @@ import aze.ui.Ui;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
+/**
+ * Main class for the Aze chatbot application.
+ * Initializes the application and handles the main loop.
+ */
 public class Aze {
 
     private Storage storage;
     private Tasklist tasks;
     private Ui ui;
 
+    /**
+     * Constructs a new Aze instance.
+     * Initializes the user interface, storage, and task list.
+     *
+     * @param filePath The path to the file where tasks are stored.
+     */
     public Aze(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -30,6 +40,10 @@ public class Aze {
         }
     }
     
+    /**
+     * Runs the main loop of the application.
+     * Handles user input and executes commands.
+     */
     public void run() {
         ui.display("Hello! I'm Aze\n     What can I do for you?");
         Scanner scanner = new Scanner(System.in);
@@ -127,6 +141,11 @@ public class Aze {
         scanner.close();
     }
 
+    /**
+     * The entry point of the application.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         new Aze("data/tasks.txt").run();
     }

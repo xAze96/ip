@@ -3,10 +3,20 @@ package aze.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a deadline task.
+ * Contains a due date.
+ */
 public class Deadline extends Task {
 
     protected LocalDate by;
 
+    /**
+     * Constructs a new Deadline.
+     *
+     * @param description The description of the deadline.
+     * @param by The due date of the deadline.
+     */
     public Deadline(String description, String by) {
         super(description);
         this.by = LocalDate.parse(by);
