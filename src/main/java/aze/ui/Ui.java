@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 public class Ui {
     private final Scanner scanner;
-    
+
     /**
      * Constructs a new Ui instance.
      * Initializes the scanner for user input.

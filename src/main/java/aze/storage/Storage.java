@@ -49,20 +49,20 @@ public class Storage {
 
                 Task task;
                 switch (taskType) {
-                    case "T":
-                        task = new Todo(description);
-                        break;
-                    case "D":
-                        String by = parts[3];
-                        task = new Deadline(description, by);
-                        break;
-                    case "E":
-                        String from = parts[3];
-                        String to = parts[4];
-                        task = new Event(description, from, to);
-                        break;
-                    default:
-                        continue;
+                case "T":
+                    task = new Todo(description);
+                    break;
+                case "D":
+                    String by = parts[3];
+                    task = new Deadline(description, by);
+                    break;
+                case "E":
+                    String from = parts[3];
+                    String to = parts[4];
+                    task = new Event(description, from, to);
+                    break;
+                default:
+                    continue;
                 }
                 if (isDone) {
                     task.markAsDone();

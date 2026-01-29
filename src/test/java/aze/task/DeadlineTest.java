@@ -1,9 +1,9 @@
 package aze.task;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 public class DeadlineTest {
 
@@ -15,9 +15,9 @@ public class DeadlineTest {
         deadline.markAsNotDone();
         assertEquals("[D][ ] Submit report (by: Nov 30 2024)", deadline.toString());
     }
-    
+
     @Test
-    public void toString_ValidDateFormat_success() {
+    public void toString_validDateFormat_success() {
         Deadline deadline = new Deadline("Complete assignment", "2024-12-25");
         assertEquals("[D][ ] Complete assignment (by: Dec 25 2024)", deadline.toString());
     }
