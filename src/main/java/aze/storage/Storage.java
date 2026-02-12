@@ -83,6 +83,7 @@ public class Storage {
      * @throws AzeException If there is an error writing to the file.
      */
     public void save(List<Task> tasks) throws AzeException {
+        assert tasks != null : "Task list to save cannot be null";
         try {
             if (!this.file.getParentFile().exists()) {
                 this.file.getParentFile().mkdirs();

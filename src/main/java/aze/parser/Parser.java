@@ -15,6 +15,7 @@ public class Parser {
      * @throws AzeException If the command is unknown.
      */
     public static Command parseCommand(String input) throws AzeException {
+        assert input != null : "Input string cannot be null";
         String[] inputs = input.split(" ", 2);
         try {
             return Command.valueOf(inputs[0].toUpperCase());
