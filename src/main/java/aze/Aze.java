@@ -71,84 +71,28 @@ public class Aze {
                 response = "Bye. Hope to see you again soon!";
                 break;
             case LIST:
-                String taskString = String.join("\n     ", IntStream.range(0, tasks.size())
-                        .mapToObj(i -> (i + 1) + "." + tasks.get(i))
-                        .toList());
-                response = "Here are the tasks in your list:\n     " + taskString;
+                response = handleList();
                 break;
             case MARK:
-                try {
-                    int taskNum = Integer.parseInt(inputs[1]) - 1;
-                    tasks.get(taskNum).markAsDone();
-                    response = "Nice! I've marked this task as done:\n       " + tasks.get(taskNum);
-                } catch (IndexOutOfBoundsException | NumberFormatException e) {
-                    throw new AzeException("Please provide a valid task number to mark.");
-                }
+                response = handleMark(inputs);
                 break;
             case UNMARK:
-                try {
-                    int taskNum = Integer.parseInt(inputs[1]) - 1;
-                    tasks.get(taskNum).markAsNotDone();
-                    response = "OK, I've marked this task as not done yet:\n       " + tasks.get(taskNum);
-                } catch (IndexOutOfBoundsException | NumberFormatException e) {
-                    throw new AzeException("Please provide a valid task number to unmark.");
-                }
+                response = handleUnmark(inputs);
                 break;
             case TODO:
-                if (inputs.length < 2 || inputs[1].isBlank()) {
-                    throw new AzeException("Please provide a description for the todo.");
-                }
-                response = addTask(tasks, new Todo(inputs[1]));
+                response = handleTodo(inputs);
                 break;
             case DEADLINE:
-                if (inputs.length < 2 || inputs[1].isBlank()) {
-                    throw new AzeException("Please provide a description for the deadline.");
-                }
-                String[] deadlineInputs = inputs[1].split(" /by ");
-                if (deadlineInputs.length < 2 || deadlineInputs[0].isBlank()) {
-                    throw new AzeException("Please specify a time/date using ' /by '.");
-                }
-                try {
-                    response = addTask(tasks, new Deadline(deadlineInputs[0], deadlineInputs[1]));
-                } catch (Exception e) {
-                    throw new AzeException("Please provide the date in the format YYYY-MM-DD.");
-                }
+                response = handleDeadline(inputs);
                 break;
             case EVENT:
-                if (inputs.length < 2 || inputs[1].isBlank()) {
-                    throw new AzeException("Please provide a description for the event.");
-                }
-                String[] eventInputs = inputs[1].split(" /from ");
-                if (eventInputs.length < 2 || eventInputs[0].isBlank()) {
-                    throw new AzeException("Please specify a start time/date using ' /from ' and ' /to '.");
-                }
-                String[] fromTo = eventInputs[1].split(" /to ");
-                if (fromTo.length < 2 || fromTo[0].isBlank()) {
-                    throw new AzeException("Please specify a start time/date using ' /from ' and ' /to '.");
-                }
-                response = addTask(tasks, new Event(eventInputs[0], fromTo[0], fromTo[1]));
+                response = handleEvent(inputs);
                 break;
             case DELETE:
-                try {
-                    int taskNum = Integer.parseInt(inputs[1]) - 1;
-                    response = "Noted. I've removed this task:\n       " + tasks.remove(taskNum)
-                            + "\n     Now you have " + tasks.size() + " tasks in the list.";
-                } catch (IndexOutOfBoundsException | NumberFormatException e) {
-                    throw new AzeException("Please provide a valid task number to delete.");
-                }
+                response = handleDelete(inputs);
                 break;
             case FIND:
-                if (inputs.length < 2 || inputs[1].isBlank()) {
-                    throw new AzeException("Please provide a keyword to search.");
-                }
-                String keyword = inputs[1];
-                Tasklist matchingTasks = new Tasklist(tasks.getAllTasks().stream()
-                        .filter(task -> task.matchesDescription(keyword))
-                        .toList());
-                String matchingString = String.join("\n     ", IntStream.range(0, matchingTasks.size())
-                        .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
-                        .toList());
-                response = "Here are the matching tasks in your list:\n     " + matchingString;
+                response = handleFind(inputs);
                 break;
             default:
                 throw new AzeException("Unknown command.");
@@ -160,6 +104,100 @@ public class Aze {
         }
     }
 
+    private String handleList() {
+        String taskString = String.join("\n     ", IntStream.range(0, tasks.size())
+                .mapToObj(i -> (i + 1) + "." + tasks.get(i))
+                .toList());
+        return "Here are the tasks in your list:\n     " + taskString;
+    }
+
+    private String handleMark(String[] inputs) throws AzeException {
+        try {
+            int taskNum = Integer.parseInt(inputs[1]) - 1;
+            tasks.get(taskNum).markAsDone();
+            return "Nice! I've marked this task as done:\n       " + tasks.get(taskNum);
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            throw new AzeException("Please provide a valid task number to mark.");
+        }
+    }
+
+    private String handleUnmark(String[] inputs) throws AzeException {
+        try {
+            int taskNum = Integer.parseInt(inputs[1]) - 1;
+            tasks.get(taskNum).markAsNotDone();
+            return "OK, I've marked this task as not done yet:\n       " + tasks.get(taskNum);
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            throw new AzeException("Please provide a valid task number to unmark.");
+        }
+    }
+
+    private String handleTodo(String[] inputs) throws AzeException {
+        if (inputs.length < 2 || inputs[1].isBlank()) {
+            throw new AzeException("Please provide a description for the todo.");
+        }
+        return addTask(tasks, new Todo(inputs[1]));
+    }
+
+    private String handleDeadline(String[] inputs) throws AzeException {
+        if (inputs.length < 2 || inputs[1].isBlank()) {
+            throw new AzeException("Please provide a description for the deadline.");
+        }
+        String[] deadlineInputs = inputs[1].split(" /by ");
+        if (deadlineInputs.length < 2 || deadlineInputs[0].isBlank()) {
+            throw new AzeException("Please specify a time/date using ' /by '.");
+        }
+        try {
+            return addTask(tasks, new Deadline(deadlineInputs[0], deadlineInputs[1]));
+        } catch (Exception e) {
+            throw new AzeException("Please provide the date in the format YYYY-MM-DD.");
+        }
+    }
+
+    private String handleEvent(String[] inputs) throws AzeException {
+        if (inputs.length < 2 || inputs[1].isBlank()) {
+            throw new AzeException("Please provide a description for the event.");
+        }
+        String[] eventInputs = inputs[1].split(" /from ");
+        if (eventInputs.length < 2 || eventInputs[0].isBlank()) {
+            throw new AzeException("Please specify a start time/date using ' /from ' and ' /to '.");
+        }
+        String[] fromTo = eventInputs[1].split(" /to ");
+        if (fromTo.length < 2 || fromTo[0].isBlank()) {
+            throw new AzeException("Please specify a start time/date using ' /from ' and ' /to '.");
+        }
+        return addTask(tasks, new Event(eventInputs[0], fromTo[0], fromTo[1]));
+    }
+
+    private String handleDelete(String[] inputs) throws AzeException {
+        try {
+            int taskNum = Integer.parseInt(inputs[1]) - 1;
+            return "Noted. I've removed this task:\n       " + tasks.remove(taskNum)
+                    + "\n     Now you have " + tasks.size() + " tasks in the list.";
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            throw new AzeException("Please provide a valid task number to delete.");
+        }
+    }
+
+    private String handleFind(String[] inputs) throws AzeException {
+        if (inputs.length < 2 || inputs[1].isBlank()) {
+            throw new AzeException("Please provide a keyword to search.");
+        }
+        String keyword = inputs[1];
+        Tasklist matchingTasks = new Tasklist(tasks.getAllTasks().stream()
+                .filter(task -> task.matchesDescription(keyword))
+                .toList());
+        String matchingString = String.join("\n     ", IntStream.range(0, matchingTasks.size())
+                .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
+                .toList());
+        return "Here are the matching tasks in your list:\n     " + matchingString;
+    }
+    
+    private String addTask(Tasklist tasks, Task task) {
+        tasks.add(task);
+        return "Got it. I've added this task:\n       " + task
+                + "\n     Now you have " + tasks.size() + " tasks in the list.";
+    }
+
     /**
      * The entry point of the application.
      *
@@ -167,12 +205,6 @@ public class Aze {
      */
     public static void main(String[] args) {
         new Aze("data/tasks.txt").run();
-    }
-
-    private static String addTask(Tasklist tasks, Task task) {
-        tasks.add(task);
-        return "Got it. I've added this task:\n       " + task
-                + "\n     Now you have " + tasks.size() + " tasks in the list.";
     }
 
     /**
