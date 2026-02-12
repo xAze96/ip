@@ -193,6 +193,7 @@ public class Aze {
     }
     
     private String addTask(Tasklist tasks, Task task) {
+        assert task != null : "Task to add cannot be null";
         tasks.add(task);
         return "Got it. I've added this task:\n       " + task
                 + "\n     Now you have " + tasks.size() + " tasks in the list.";
