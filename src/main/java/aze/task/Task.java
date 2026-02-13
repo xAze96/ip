@@ -7,6 +7,7 @@ package aze.task;
 public class Task {
     protected String description;
     protected boolean isDone;
+    protected Priority priority;
 
     /**
      * Constructs a new Task.
@@ -16,6 +17,7 @@ public class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.priority = Priority.LOW;
     }
 
     /**
@@ -39,7 +41,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "[" + getStatusIcon() + "] " + description + " [" + priority + "]";
     }
 
     /**
@@ -57,11 +59,20 @@ public class Task {
     }
 
     /**
+     * Sets the priority of the task.
+     *
+     * @param priority The priority level to set.
+     */
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    /**
      * Returns the string representation of the task for file storage.
      *
      * @return The formatted string for file storage.
      */
     public String toFileString() {
-        return (isDone ? "1" : "0") + " | " + description;
+        return (isDone ? "1" : "0") + " | " + description + " | " + priority;
     }
 }

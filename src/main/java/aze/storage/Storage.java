@@ -11,6 +11,7 @@ import java.util.Scanner;
 import aze.exception.AzeException;
 import aze.task.Deadline;
 import aze.task.Event;
+import aze.task.Priority;
 import aze.task.Task;
 import aze.task.Todo;
 
@@ -46,19 +47,19 @@ public class Storage {
                 String taskType = parts[0];
                 boolean isDone = parts[1].equals("1");
                 String description = parts[2];
-
+                Priority priority = Priority.valueOf(parts[3].toUpperCase());
                 Task task;
                 switch (taskType) {
                 case "T":
                     task = new Todo(description);
                     break;
                 case "D":
-                    String by = parts[3];
+                    String by = parts[4];
                     task = new Deadline(description, by);
                     break;
                 case "E":
-                    String from = parts[3];
-                    String to = parts[4];
+                    String from = parts[4];
+                    String to = parts[5];
                     task = new Event(description, from, to);
                     break;
                 default:
@@ -67,6 +68,7 @@ public class Storage {
                 if (isDone) {
                     task.markAsDone();
                 }
+                task.setPriority(priority);
                 tasks.add(task);
             }
             scanner.close();

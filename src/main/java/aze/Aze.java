@@ -8,6 +8,7 @@ import aze.parser.Parser;
 import aze.storage.Storage;
 import aze.task.Deadline;
 import aze.task.Event;
+import aze.task.Priority;
 import aze.task.Task;
 import aze.task.Tasklist;
 import aze.task.Todo;
@@ -93,6 +94,9 @@ public class Aze {
                 break;
             case FIND:
                 response = handleFind(inputs);
+                break;
+            case PRIORITY:
+                response = handlePriority(inputs);
                 break;
             default:
                 throw new AzeException("Unknown command.");
@@ -191,7 +195,27 @@ public class Aze {
                 .toList());
         return "Here are the matching tasks in your list:\n     " + matchingString;
     }
-    
+
+    private String handlePriority(String[] inputs) throws AzeException {
+        if (inputs.length < 2 || inputs[1].isBlank()) {
+            throw new AzeException("Please provide a task number and priority level.");
+        }
+        String[] priorityInputs = inputs[1].split(" ", 2);
+        if (priorityInputs.length < 2) {
+            throw new AzeException("Please provide both task number and priority level (low/medium/high).");
+        }
+        try {
+            int taskNum = Integer.parseInt(priorityInputs[0]) - 1;
+            Priority priority = Priority.valueOf(priorityInputs[1].toUpperCase());
+            tasks.get(taskNum).setPriority(priority);
+            return "Got it. I've updated the priority of this task:\n       " + tasks.get(taskNum);
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            throw new AzeException("Please provide a valid task number to update priority.");
+        } catch (IllegalArgumentException e) {
+            throw new AzeException("Please provide a valid priority level (low/medium/high).");
+        }
+    }
+
     private String addTask(Tasklist tasks, Task task) {
         assert task != null : "Task to add cannot be null";
         tasks.add(task);
