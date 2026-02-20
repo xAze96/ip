@@ -74,6 +74,8 @@ public class Storage {
             scanner.close();
         } catch (FileNotFoundException e) {
             throw new AzeException("Save file not found.");
+        } catch (Exception e) {
+            throw new AzeException("Error loading tasks from file.");
         }
         return tasks;
     }

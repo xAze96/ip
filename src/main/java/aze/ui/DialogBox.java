@@ -37,7 +37,7 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
-        
+
         // Claude Sonnet 4.5 - Crop the profile pictures into a circle
         Circle clip = new Circle();
         clip.setCenterX(displayPicture.getFitWidth() / 2);
