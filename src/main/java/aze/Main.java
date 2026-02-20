@@ -23,6 +23,12 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("Aze");
+
+            // Claude Sonnet 4.5 - Set minimum window size and modify MainWindow.fxml to make the window resizable
+            stage.setMinHeight(400);
+            stage.setMinWidth(300);
+
             fxmlLoader.<MainWindow>getController().setAze(aze);
             stage.show();
         } catch (IOException e) {

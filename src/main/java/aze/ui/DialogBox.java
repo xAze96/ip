@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
@@ -36,6 +37,13 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+        
+        // Claude Sonnet 4.5 - Crop the profile pictures into a circle
+        Circle clip = new Circle();
+        clip.setCenterX(displayPicture.getFitWidth() / 2);
+        clip.setCenterY(displayPicture.getFitHeight() / 2);
+        clip.setRadius(displayPicture.getFitWidth() / 2);
+        displayPicture.setClip(clip);
     }
 
     /**
@@ -49,11 +57,16 @@ public class DialogBox extends HBox {
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        var db = new DialogBox(text, img);
+        db.dialog.setStyle("-fx-background-color: #C6F8F8; -fx-background-radius: 10; -fx-padding: 10;");
+        db.setSpacing(10);
+        return db;
     }
 
     public static DialogBox getAzeDialog(String text, Image img) {
         var db = new DialogBox(text, img);
+        db.dialog.setStyle("-fx-background-color: #E8E8E8; -fx-background-radius: 10; -fx-padding: 10;");
+        db.setSpacing(10);
         db.flip();
         return db;
     }

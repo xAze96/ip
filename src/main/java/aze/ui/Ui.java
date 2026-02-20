@@ -39,9 +39,9 @@ public class Ui {
      * @param text The message to display.
      */
     public void display(String text) {
-        System.out.println("    ____________________________________________________________");
-        System.out.println("     " + text);
-        System.out.println("    ____________________________________________________________\n");
+        System.out.println("____________________________________________________________");
+        System.out.println(text);
+        System.out.println("____________________________________________________________\n");
     }
 
     /**

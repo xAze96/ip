@@ -47,7 +47,7 @@ public class Aze {
      * Handles user input and executes commands.
      */
     public void run() {
-        ui.display("Hello! I'm Aze\n     What can I do for you?");
+        ui.display("Hello! I'm Aze\n What can I do for you?");
         while (!isExit) {
             String input = ui.readCommand();
             String response = getResponse(input);
@@ -109,17 +109,17 @@ public class Aze {
     }
 
     private String handleList() {
-        String taskString = String.join("\n     ", IntStream.range(0, tasks.size())
+        String taskString = String.join("\n ", IntStream.range(0, tasks.size())
                 .mapToObj(i -> (i + 1) + "." + tasks.get(i))
                 .toList());
-        return "Here are the tasks in your list:\n     " + taskString;
+        return "Here are the tasks in your list:\n " + taskString;
     }
 
     private String handleMark(String[] inputs) throws AzeException {
         try {
             int taskNum = Integer.parseInt(inputs[1]) - 1;
             tasks.get(taskNum).markAsDone();
-            return "Nice! I've marked this task as done:\n       " + tasks.get(taskNum);
+            return "Nice! I've marked this task as done:\n " + tasks.get(taskNum);
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             throw new AzeException("Please provide a valid task number to mark.");
         }
@@ -129,7 +129,7 @@ public class Aze {
         try {
             int taskNum = Integer.parseInt(inputs[1]) - 1;
             tasks.get(taskNum).markAsNotDone();
-            return "OK, I've marked this task as not done yet:\n       " + tasks.get(taskNum);
+            return "OK, I've marked this task as not done yet:\n " + tasks.get(taskNum);
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             throw new AzeException("Please provide a valid task number to unmark.");
         }
@@ -175,8 +175,8 @@ public class Aze {
     private String handleDelete(String[] inputs) throws AzeException {
         try {
             int taskNum = Integer.parseInt(inputs[1]) - 1;
-            return "Noted. I've removed this task:\n       " + tasks.remove(taskNum)
-                    + "\n     Now you have " + tasks.size() + " tasks in the list.";
+            return "Noted. I've removed this task:\n " + tasks.remove(taskNum)
+                    + "\n Now you have " + tasks.size() + " tasks in the list.";
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             throw new AzeException("Please provide a valid task number to delete.");
         }
@@ -190,10 +190,10 @@ public class Aze {
         Tasklist matchingTasks = new Tasklist(tasks.getAllTasks().stream()
                 .filter(task -> task.matchesDescription(keyword))
                 .toList());
-        String matchingString = String.join("\n     ", IntStream.range(0, matchingTasks.size())
+        String matchingString = String.join("\n ", IntStream.range(0, matchingTasks.size())
                 .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
                 .toList());
-        return "Here are the matching tasks in your list:\n     " + matchingString;
+        return "Here are the matching tasks in your list:\n " + matchingString;
     }
 
     private String handlePriority(String[] inputs) throws AzeException {
@@ -208,7 +208,7 @@ public class Aze {
             int taskNum = Integer.parseInt(priorityInputs[0]) - 1;
             Priority priority = Priority.valueOf(priorityInputs[1].toUpperCase());
             tasks.get(taskNum).setPriority(priority);
-            return "Got it. I've updated the priority of this task:\n       " + tasks.get(taskNum);
+            return "Got it. I've updated the priority of this task:\n " + tasks.get(taskNum);
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             throw new AzeException("Please provide a valid task number to update priority.");
         } catch (IllegalArgumentException e) {
@@ -219,8 +219,8 @@ public class Aze {
     private String addTask(Tasklist tasks, Task task) {
         assert task != null : "Task to add cannot be null";
         tasks.add(task);
-        return "Got it. I've added this task:\n       " + task
-                + "\n     Now you have " + tasks.size() + " tasks in the list.";
+        return "Got it. I've added this task:\n " + task
+                + "\n Now you have " + tasks.size() + " tasks in the list.";
     }
 
     /**

@@ -35,7 +35,7 @@ public class MainWindow extends AnchorPane {
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         dialogContainer.getChildren().add(
-                DialogBox.getAzeDialog("     Hello! I'm Aze\n     What can I do for you?", azeImage)
+                DialogBox.getAzeDialog(" Hello! I'm Aze\n What can I do for you?", azeImage)
         );
     }
 
@@ -55,7 +55,7 @@ public class MainWindow extends AnchorPane {
 
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getAzeDialog("     " + response, azeImage)
+                DialogBox.getAzeDialog(response, azeImage)
         );
         userInput.clear();
         if (aze.isExit()) {
